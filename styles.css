@@ -815,12 +815,13 @@ body[data-state="specs"] .shifter {
 .gl-n { top: 40px; }
 .gl-d { top: 80px; }
 .knob {
-  position: absolute; left: 50%; top: var(--ky, 42px);
+  /* --gi: gear index 0/1/2 — drives vertical travel on desktop, horizontal on mobile */
+  position: absolute; left: 50%; top: calc(2px + var(--gi, 1) * 40px);
   width: 18px; height: 18px;
   transform: translateX(-50%);
   background: var(--ink);
   box-shadow: 2px 2px 0 rgba(11, 11, 12, 0.25);
-  transition: top 0.6s cubic-bezier(0.3, 1.7, 0.35, 1); /* springy travel */
+  transition: top 0.6s cubic-bezier(0.3, 1.7, 0.35, 1), left 0.6s cubic-bezier(0.3, 1.7, 0.35, 1);
 }
 .knob::after {
   content: ""; position: absolute; left: 3px; right: 3px; bottom: 3px; height: 3px;
@@ -923,12 +924,31 @@ body.cursor-hot .cursor-dot { background: var(--red); }
     animation: none;
   }
 
-  /* compact touch shifter, under the nav */
-  .shifter { top: 72px; right: 14px; width: 96px; padding: 9px 10px 11px; }
+  /* horizontal shifter bar filling the empty band above the title */
+  .shifter {
+    top: auto; bottom: 336px; left: 22px; right: 22px; width: auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 10px 14px;
+  }
+  .shifter-title { margin-bottom: 0; flex-direction: column; gap: 4px; }
+  .gate { height: 46px; width: 150px; margin: 0; flex: 1; max-width: 170px; }
+  .gate-track {
+    left: 8px; right: 8px; top: 65%; bottom: auto;
+    width: auto; height: 2px; transform: translateY(-50%);
+  }
+  .gate-label { top: 0; }
+  .gl-r { left: 2px; }
+  .gl-n { left: 50%; transform: translateX(-50%); top: 0; }
+  .gl-d { left: auto; right: 0; top: 0; }
+  .knob {
+    top: 65%; left: calc(8px + var(--gi, 1) * ((100% - 16px - 18px) / 2));
+    transform: translateY(-50%);
+  }
+  .gear-readout { flex-direction: column; gap: 2px; }
   body[data-state="opening"] .shifter,
   body[data-state="closing"] .shifter,
   body[data-state="specs"] .shifter {
-    transform: translateX(28px);
+    transform: translateY(24px);
   }
   .gear-flash { font-size: clamp(150px, 34vh, 300px); }
   .hero-ui {

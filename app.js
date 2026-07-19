@@ -369,7 +369,7 @@ function vibe(pattern) {
 shifter.addEventListener("click", () => {
   gearIdx = (gearIdx + 1) % GEARS.length;
   const g = GEARS[gearIdx];
-  shiftKnob.style.top = g.y + "px";
+  shiftKnob.style.setProperty("--gi", gearIdx);
   gearVal.textContent = g.label;
   gearVal.style.color = g.color;
   if (body.dataset.state === "hero") rpmTarget = g.rpm;
