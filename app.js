@@ -4,6 +4,13 @@ const body = document.body;
 const video = document.getElementById("carVideo");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* small screens stream the 720p footage (~1.2MB) instead of the 4K masters */
+const smallScreen = matchMedia("(max-width: 900px)").matches;
+const SRC = smallScreen
+  ? { open: "assets/opening-720.mp4", close: "assets/closing-720.mp4" }
+  : { open: "assets/opening.mp4", close: "assets/closing.mp4" };
+video.src = SRC.open;
+
 /* guard against phantom focus/anchor scroll on the clipped stage */
 setInterval(() => {
   const se = document.scrollingElement;
@@ -101,7 +108,7 @@ function reveal() {
 /* ---------------- state machine ---------------- */
 
 const closeVideo = document.getElementById("closeVideo");
-closeVideo.load();
+closeVideo.src = SRC.close; // fetched lazily, first time the hood opens
 const seqLines = document.getElementById("seqLines");
 const seqPct = document.getElementById("seqPct");
 const seqBar = document.getElementById("seqBar");
@@ -146,6 +153,10 @@ function openSpecs() {
   body.dataset.state = "opening";
   rpmTarget = 6800;
   seqTag.textContent = "OPENING SEQUENCE // P58 ACCESS";
+  if (!closeVideo.dataset.loaded) {
+    closeVideo.load(); // buffer the closing footage while the hood opens
+    closeVideo.dataset.loaded = "1";
+  }
   bootSequence(BOOT_OPEN, () => {
     if (reduced) {
       video.currentTime = video.duration || 4;
