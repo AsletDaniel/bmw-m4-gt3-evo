@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMW M4 GT3 EVO — M Motorsport</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='6' width='8' height='20' fill='%23009ADA' transform='skewX(-12)'/%3E%3Crect x='12' y='6' width='8' height='20' fill='%231C69D4' transform='skewX(-12)'/%3E%3Crect x='22' y='6' width='8' height='20' fill='%23E4002B' transform='skewX(-12)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-state="hero">
+
+<!-- ============ PRELOADER ============ -->
+<div class="loader" id="loader">
+  <div class="loader-stripes">
+    <span class="stripe stripe-sky"></span>
+    <span class="stripe stripe-blue"></span>
+    <span class="stripe stripe-red"></span>
+  </div>
+  <div class="loader-count" id="loaderCount">000</div>
+  <div class="loader-label">INITIALIZING M TELEMETRY<span class="blink">_</span></div>
+  <div class="loader-bar"><span id="loaderBar"></span></div>
+</div>
+<div class="curtain curtain-top"></div>
+<div class="curtain curtain-bottom"></div>
+
+<!-- ============ GLOBAL FX ============ -->
+<div class="glitch-flash" id="glitchFlash"></div>
+<div class="crosshair" id="crosshair">
+  <span class="ch-x"></span>
+  <span class="ch-y"></span>
+  <span class="ch-coords" id="chCoords">X 0000 · Y 0000</span>
+</div>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- rev overload whiteout + message -->
+<div class="overload" id="overload">
+  <div class="ol-inner">
+    <div class="loader-stripes">
+      <span class="stripe stripe-sky"></span>
+      <span class="stripe stripe-blue"></span>
+      <span class="stripe stripe-red"></span>
+    </div>
+    <div class="ol-title">M POWER<span>UNLEASHED</span></div>
+    <div class="ol-sub">P58 REDLINE · 7,200 RPM — NOW YOU'VE EXPERIENCED THE FULL 590 HP</div>
+    <button class="ol-btn" id="olBtn">RETURN TO THE GARAGE</button>
+  </div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <a class="brand" href="#">
+    <span class="brand-stripes">
+      <i></i><i></i><i></i>
+    </span>
+    <span class="brand-name">BMW M MOTORSPORT</span>
+  </a>
+  <nav class="nav-links">
+    <a href="#" class="nav-link" data-nav="hero">RACE CARS</a>
+    <a href="#" class="nav-link" data-nav="specs">SPECIFICATIONS</a>
+    <a href="#" class="nav-link">NEWS &amp; REVIEWS</a>
+  </nav>
+</header>
+
+<!-- ============ TELEMETRY READOUT ============ -->
+<div class="telemetry" id="telemetry">
+  <span>OIL <b id="tOil">90.0</b>°C</span>
+  <span>WTR <b id="tWtr">76.0</b>°C</span>
+  <span>RPM <b id="tRpm">0000</b></span>
+  <span class="t-live"><i></i>LIVE</span>
+</div>
+
+<!-- ============ STAGE ============ -->
+<main class="stage" id="stage">
+<div class="szoom" id="szoom">
+
+  <div class="grid-bg"></div>
+  <div class="grid-cells" id="gridCells"></div>
+
+  <!-- giant scrolling ghost text -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>M4 GT3 EVO — M POWER — M4 GT3 EVO — M POWER —&nbsp;</span>
+      <span>M4 GT3 EVO — M POWER — M4 GT3 EVO — M POWER —&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- car -->
+  <div class="car-rig" id="carRig">
+    <div class="car-par" id="carPar">
+      <div class="car-wrap">
+        <video id="carVideo" src="assets/opening.mp4" muted playsinline preload="auto"></video>
+        <video id="closeVideo" src="assets/closing.mp4" muted playsinline preload="auto"></video>
+        <div class="callouts">
+          <button class="marker" data-idx="1" style="--mx:36.5%; --my:33%; --d:0">
+            <span class="marker-dot"></span><span class="marker-no">01</span>
+          </button>
+          <button class="marker" data-idx="2" style="--mx:25%;   --my:39%; --d:1">
+            <span class="marker-dot"></span><span class="marker-no">02</span>
+          </button>
+          <button class="marker" data-idx="3" style="--mx:43%;   --my:41%; --d:2">
+            <span class="marker-dot"></span><span class="marker-no">03</span>
+          </button>
+          <button class="marker" data-idx="4" style="--mx:29%;   --my:50%; --d:3">
+            <span class="marker-dot"></span><span class="marker-no">04</span>
+          </button>
+          <button class="marker" data-idx="5" style="--mx:45.5%; --my:52%; --d:4">
+            <span class="marker-dot"></span><span class="marker-no">05</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- M Drivelogic shifter widget -->
+  <aside class="shifter" id="shifter">
+    <div class="shifter-title"><span class="m-mini"><i></i><i></i><i></i></span>DRIVELOGIC</div>
+    <div class="gate">
+      <span class="gate-track"></span>
+      <span class="gate-label gl-r">R</span>
+      <span class="gate-label gl-n">N</span>
+      <span class="gate-label gl-d">D/S</span>
+      <span class="knob" id="shiftKnob"></span>
+    </div>
+    <div class="gear-readout"><b id="gearVal">N</b><span>GEAR</span></div>
+  </aside>
+
+  <!-- camera control -->
+  <aside class="side-label">
+    <button class="side-arrow" id="camUp" aria-label="Camera closer">↑</button>
+    <span class="side-chip">BMW M4<br>GT3 EVO<b class="cam-read" id="camRead">CAM 02 · STD</b></span>
+    <button class="side-arrow side-arrow-down" id="camDown" aria-label="Camera wider">↓</button>
+  </aside>
+
+  <!-- ============ HERO UI ============ -->
+  <section class="hero-ui">
+    <div class="hero-title-block">
+      <h1 class="hero-title" id="heroTitle">BMW <span class="px-word">M4</span> GT3 EVO</h1>
+      <div class="hero-sub"><span class="sub-tick"></span>PRICE ON REQUEST</div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-value"><b class="count" data-target="590">0</b> HP</div>
+        <div class="stat-label">HORSEPOWER</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value"><b class="count" data-target="1250" data-format="comma">0</b> KG</div>
+        <div class="stat-label">WEIGHT</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value"><b class="count" data-target="305">0</b> KM/H</div>
+        <div class="stat-label">TOP SPEED</div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-specs" id="btnSpecs">
+        <span class="btn-label">SPECS</span>
+        <span class="btn-chevrons"><i>›</i><i>›</i><i>›</i></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ SPECS UI ============ -->
+  <section class="specs-ui">
+    <div class="specs-head">
+      <div class="specs-stripes"><i></i><i></i><i></i></div>
+      <h2 class="specs-title" id="specsTitle">ENGINE DETAILS</h2>
+      <div class="specs-sub">P58 3.0L / INLINE 6</div>
+      <ul class="specs-list">
+        <li class="spec-item" data-idx="1" style="--i:0"><span class="spec-no">01</span><span class="spec-bar"><i></i><i></i><i></i></span><span class="spec-name">CARBON PLENUM</span></li>
+        <li class="spec-item" data-idx="2" style="--i:1"><span class="spec-no">02</span><span class="spec-bar"><i></i><i></i><i></i></span><span class="spec-name">TWIN TURBOS</span></li>
+        <li class="spec-item" data-idx="3" style="--i:2"><span class="spec-no">03</span><span class="spec-bar"><i></i><i></i><i></i></span><span class="spec-name">INTAKE DUCTS</span></li>
+        <li class="spec-item" data-idx="4" style="--i:3"><span class="spec-no">04</span><span class="spec-bar"><i></i><i></i><i></i></span><span class="spec-name">DRY-SUMP SYSTEM</span></li>
+        <li class="spec-item" data-idx="5" style="--i:4"><span class="spec-no">05</span><span class="spec-bar"><i></i><i></i><i></i></span><span class="spec-name">COOLING SYSTEM</span></li>
+      </ul>
+    </div>
+
+    <button class="btn-close" id="btnClose"><span class="x-ico"></span>CLOSE HOOD</button>
+
+    <button class="btn-rev" id="btnRev">
+      <span class="rev-dot"></span>
+      <span class="rev-label">HOLD TO REV</span>
+      <b class="rev-rpm" id="revRpm">0000</b>
+    </button>
+
+    <div class="specs-stats">
+      <div class="sstat" style="--i:0">
+        <div class="sstat-label">ENGINE</div>
+        <div class="sstat-value">P58 3.0L</div>
+      </div>
+      <div class="sstat" style="--i:1">
+        <div class="sstat-label">POWER</div>
+        <div class="sstat-value"><b class="scount" data-target="590">0</b> HP</div>
+      </div>
+      <div class="sstat" style="--i:2">
+        <div class="sstat-label">LAYOUT</div>
+        <div class="sstat-value">INLINE 6</div>
+      </div>
+      <div class="sstat" style="--i:3">
+        <div class="sstat-label">DISPLACEMENT</div>
+        <div class="sstat-value"><b class="scount" data-target="2993" data-format="comma">0</b> CM³</div>
+      </div>
+      <div class="sstat" style="--i:4">
+        <div class="sstat-label">TECHNOLOGY</div>
+        <div class="sstat-value">M TWINPOWER TURBO</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OPENING SEQUENCE OVERLAY ============ -->
+  <div class="seq" id="seq">
+    <div class="seq-lines" id="seqLines"></div>
+    <div class="seq-pct" id="seqPct">000</div>
+    <div class="seq-progress"><span id="seqBar"></span></div>
+    <div class="seq-tag">OPENING SEQUENCE // P58 ACCESS</div>
+  </div>
+
+</div>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
