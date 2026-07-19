@@ -365,7 +365,7 @@ body[data-state="specs"] .side-label {
 .hero-ui {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 12;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: end; gap: 24px;
   padding: 0 48px 40px;
   transition: opacity 0.45s ease, transform 0.45s var(--ease-out);
@@ -400,6 +400,14 @@ body.ready .hero-title .ch {
 }
 .hero-title .sp { display: inline-block; width: 0.35em; }
 .hero-title .word, .specs-title .word { display: inline-block; white-space: nowrap; }
+
+/* sticker-style white border around "BMW" */
+.hero-title .word:first-child .ch:not(.px) {
+  text-shadow:
+    0.045em 0 0 #fff, -0.045em 0 0 #fff, 0 0.045em 0 #fff, 0 -0.045em 0 #fff,
+    0.034em 0.034em 0 #fff, -0.034em 0.034em 0 #fff,
+    0.034em -0.034em 0 #fff, -0.034em -0.034em 0 #fff;
+}
 
 /* pixel-camo "M4" */
 .hero-title .ch.px {
@@ -444,7 +452,14 @@ body.ready .hero-sub { animation: fade-up 0.7s var(--ease-out) 1.15s both; }
   to   { opacity: 1; transform: none; }
 }
 
-.hero-stats { display: flex; gap: clamp(18px, 2.6vw, 48px); justify-content: center; }
+/* right column: long SPECS CTA sitting ABOVE the stats row */
+.hero-right {
+  display: flex; flex-direction: column; gap: 20px;
+  align-items: stretch;
+  justify-self: end;
+  width: min(520px, 42vw);
+}
+.hero-stats { display: flex; gap: clamp(18px, 2.6vw, 48px); justify-content: space-between; }
 .stat { text-align: center; opacity: 0; }
 body.ready .stat:nth-child(1) { animation: fade-up 0.7s var(--ease-out) 1.0s both; }
 body.ready .stat:nth-child(2) { animation: fade-up 0.7s var(--ease-out) 1.12s both; }
@@ -474,12 +489,13 @@ body.ready .btn-specs {
     specs-pulse 2.4s ease-in-out 2.2s infinite;
 }
 
-/* single CTA — impossible to miss */
+/* single CTA — long bar above the stats, impossible to miss */
 .btn-specs {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
   background: var(--ink); color: #fff;
-  font-size: 16px; letter-spacing: 0.18em;
-  padding: 17px 24px 17px 30px;
+  font-size: 18px; letter-spacing: 0.24em;
+  padding: 21px 24px;
+  width: 100%;
   border: none;
   overflow: hidden;
   box-shadow: 7px 7px 0 var(--red);
@@ -708,8 +724,7 @@ body[data-state="closing"] .seq { opacity: 1; visibility: visible; }
 /* ================= M DRIVELOGIC SHIFTER ================= */
 
 .shifter {
-  position: absolute; right: 48px; top: 50%; z-index: 10;
-  transform: translateY(-50%);
+  position: absolute; right: 48px; top: calc(50% - 95px); z-index: 10;
   width: 92px;
   background: #fff;
   border: 2px solid var(--ink);
@@ -725,10 +740,54 @@ body.ready[data-state="hero"] .shifter { opacity: 1; transition-delay: 1.15s; }
 body[data-state="opening"] .shifter,
 body[data-state="closing"] .shifter,
 body[data-state="specs"] .shifter {
-  opacity: 0; transform: translateY(-50%) translateX(24px); transition-delay: 0s;
+  opacity: 0; transform: translateX(24px); transition-delay: 0s;
   pointer-events: none;
 }
 .shifter:hover { box-shadow: 7px 7px 0 rgba(11, 11, 12, 0.24); }
+
+/* legendary shift burst: the card swells and throws a colored aura + ring */
+.shifter.pop { animation: shifter-pop 0.55s var(--ease-pop); }
+@keyframes shifter-pop {
+  0% { transform: scale(1); }
+  30% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 4px var(--gear-c, var(--red)), 11px 11px 0 rgba(11, 11, 12, 0.28);
+  }
+  100% { transform: scale(1); }
+}
+.shifter::after {
+  content: ""; position: absolute; inset: -2px;
+  border: 2px solid var(--gear-c, var(--red));
+  opacity: 0; pointer-events: none;
+}
+.shifter.pop::after { animation: ring-out 0.55s ease-out; }
+@keyframes ring-out {
+  0% { opacity: 0.9; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.45); }
+}
+.gear-readout b { transition: color 0.25s; }
+
+/* videogame streak: the gear letter slams across the middle of the screen */
+.gear-flash {
+  position: fixed; inset: 0; z-index: 45;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-size: clamp(200px, 42vh, 460px);
+  line-height: 1;
+  color: var(--gear-c, var(--red));
+  -webkit-text-stroke: 3px #fff;
+  text-shadow: 0.045em 0.045em 0 rgba(11, 11, 12, 0.2), -0.03em -0.02em 0 rgba(0, 154, 218, 0.35);
+  opacity: 0;
+}
+.gear-flash.go { animation: gear-slam 0.62s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+@keyframes gear-slam {
+  0% { opacity: 0; transform: scale(0.45) rotate(-8deg); }
+  16% { opacity: 1; transform: scale(1.18) rotate(3deg); }
+  34% { opacity: 1; transform: scale(0.98) rotate(0deg); }
+  60% { opacity: 0.9; transform: scale(1.02); }
+  100% { opacity: 0; transform: scale(1.7); filter: blur(10px); }
+}
 
 .shifter-title {
   display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -860,15 +919,13 @@ body.cursor-hot .cursor-dot { background: var(--red); }
   }
 
   /* compact touch shifter, under the nav */
-  .shifter {
-    top: 72px; right: 14px; width: 84px;
-    transform: scale(0.85); transform-origin: top right;
-  }
+  .shifter { top: 72px; right: 14px; width: 96px; padding: 9px 10px 11px; }
   body[data-state="opening"] .shifter,
   body[data-state="closing"] .shifter,
   body[data-state="specs"] .shifter {
-    transform: scale(0.85) translateX(28px);
+    transform: translateX(28px);
   }
+  .gear-flash { font-size: clamp(150px, 34vh, 300px); }
   .hero-ui {
     grid-template-columns: 1fr;
     gap: 22px; padding: 0 22px 26px;
@@ -877,7 +934,8 @@ body.cursor-hot .cursor-dot { background: var(--red); }
   .hero-title { white-space: normal; font-size: clamp(34px, 10.4vw, 64px); }
   .hero-stats { justify-content: flex-start; gap: 28px; }
   .hero-actions { align-self: stretch; }
-  .btn-specs { flex: 1; justify-content: center; font-size: 14px; padding: 15px 18px; letter-spacing: 0.14em; }
+  .hero-right { width: 100%; justify-self: stretch; gap: 16px; }
+  .btn-specs { width: 100%; justify-content: center; font-size: 16px; padding: 19px 18px; letter-spacing: 0.2em; }
   .specs-head { left: 22px; top: 108px; max-width: 260px; } /* below CLOSE HOOD */
   .specs-stripes { display: none; } /* the nav already shows the M stripes right above */
   .specs-title { font-size: 36px; }

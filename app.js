@@ -324,11 +324,12 @@ const shiftKnob = document.getElementById("shiftKnob");
 const gearVal = document.getElementById("gearVal");
 /* punch values are page-level zoom now, so they read stronger — keep them tighter */
 const GEARS = [
-  { label: "R", y: 2, rpm: 1100, amp: 4, punch: 1.04 },
-  { label: "N", y: 42, rpm: 0, amp: 1.5, punch: 1.015 },
-  { label: "S", y: 82, rpm: 2400, amp: 9, punch: 1.09 },
+  { label: "R", y: 2, rpm: 1100, amp: 4, punch: 1.04, color: "#1c69d4" },
+  { label: "N", y: 42, rpm: 0, amp: 1.5, punch: 1.015, color: "#0b0b0c" },
+  { label: "S", y: 82, rpm: 2400, amp: 9, punch: 1.09, color: "#e4002b" },
 ];
 let gearIdx = 1;
+const gearFlash = document.getElementById("gearFlash");
 
 /* gear punch: the whole page dives toward the car, then settles back */
 const carRig = document.getElementById("carRig");
@@ -359,10 +360,22 @@ shifter.addEventListener("click", () => {
   const g = GEARS[gearIdx];
   shiftKnob.style.top = g.y + "px";
   gearVal.textContent = g.label;
+  gearVal.style.color = g.color;
   if (body.dataset.state === "hero") rpmTarget = g.rpm;
   stageShake(g.amp); // the harder the gear, the harder the room rattles
   punchZoom(g.punch); // and the deeper the page dives toward the car
   vibe(Math.round(g.amp * 8));
+  // videogame streak: slam the gear letter across the screen
+  gearFlash.textContent = g.label;
+  gearFlash.style.setProperty("--gear-c", g.color);
+  gearFlash.classList.remove("go");
+  void gearFlash.offsetWidth;
+  gearFlash.classList.add("go");
+  // legendary card burst
+  shifter.style.setProperty("--gear-c", g.color);
+  shifter.classList.remove("pop");
+  void shifter.offsetWidth;
+  shifter.classList.add("pop");
 });
 
 /* ---------------- camera control (side arrows) ---------------- */
